@@ -5,3 +5,29 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Setting.create(
+  key: 'company_address_short',
+  pretty_name: 'Short Company Address',
+  value: '123 The Road, England'
+)
+
+Setting.create(
+  key: 'company_phone_number',
+  pretty_name: 'Company Phone Number',
+  value: '0123 456 789'
+)
+
+Setting.create(
+  key: 'company_name',
+  pretty_name: 'Copmany Name',
+  value: 'ABC Company'
+)
+
+Setting.create(
+  key: 'contact_email',
+  pretty_name: 'Contact Email',
+  value: 'name@company.com'
+)
+
+puts "Settings created".green
