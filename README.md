@@ -10,6 +10,6 @@ A template to start building editable sites for clients.
 - [ ] Set domain in config/environments/production.rb
 - [ ] Run the following:
 ```bash
-make SITE_NAME=SiteNameInCamelCase
+make SITE_NAME=SiteNameInCamelCase DASH_SITE_NAME=site-name-with-dashes
 ```
 
