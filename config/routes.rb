@@ -6,9 +6,9 @@ Rails.application.routes.draw do
   root 'home#index'
 
   # Settings
-  get 'settings',          to: 'settings#index',  as: :site_settings
-  get 'settings/:id/edit', to: 'settings#edit',   as: :edit_site_setting
-  get 'settings/:id',      to: 'settings#show',   as: :site_setting
+  get 'settings',          to: 'settings#index',  as: :settings
+  get 'settings/:id/edit', to: 'settings#edit',   as: :edit_setting
+  get 'settings/:id',      to: 'settings#show',   as: :setting
   match 'settings/:id',    to: 'settings#update', via: :patch
 
   # The priority is based upon order of creation: first created -> highest priority.
