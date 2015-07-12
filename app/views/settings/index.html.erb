@@ -1,0 +1,28 @@
+<div class="container">
+  <% if @settings.any? %>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Key</th>
+          <th>Value</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @settings.each do |setting| %>
+          <tr>
+            <td><%= setting.pretty_name %></td>
+            <td><%= setting.key %></td>
+            <td><%= setting.value %></td>
+            <td>
+              <%= link_to 'Edit', edit_setting_path(setting) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <h3 class="center">There are no settings to display.</p>
+  <% end %>
+</div>

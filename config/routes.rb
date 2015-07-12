@@ -5,6 +5,12 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  # Settings
+  get 'settings',          to: 'site_settings#index',  as: :site_settings
+  get 'settings/:id/edit', to: 'site_settings#edit',   as: :site_setting_edit
+  get 'settings/:id',      to: 'site_settings#show',   as: :site_setting
+  match 'settings/:id',    to: 'site_settings#update', via: :patch
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
