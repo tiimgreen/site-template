@@ -31,4 +31,11 @@ module ApplicationHelper
       controller.controller_name == cont.downcase
     end
   end
+
+  def on_admin_page?
+    cont = controller.controller_name
+    act = controller.action_name
+
+    (cont == 'settings')
+  end
 end
