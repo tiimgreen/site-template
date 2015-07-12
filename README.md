@@ -10,6 +10,6 @@ A template to start building editable sites for clients.
 - [ ] Set domain in config/environments/production.rb
 - [ ] Run the following:
 ```bash
-rake db:create db:migrate db:seed
+make SITE_NAME=SiteNameInCamelCase
 ```
 
