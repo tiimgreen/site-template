@@ -4,7 +4,6 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Key</th>
           <th>Value</th>
           <th>Actions</th>
         </tr>
@@ -13,7 +12,6 @@
         <% @settings.each do |setting| %>
           <tr>
             <td><%= setting.pretty_name %></td>
-            <td><%= setting.key %></td>
             <td><%= setting.value %></td>
             <td>
               <%= link_to 'Edit', edit_setting_path(setting) %>
