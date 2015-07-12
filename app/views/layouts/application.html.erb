@@ -8,7 +8,15 @@
 </head>
 <body>
 
-<%= yield %>
+<%= render 'layouts/sidebar' if user_signed_in? %>
+
+<div id="body">
+  <%= render 'layouts/header' %>
+
+  <%= yield %>
+
+  <%= render 'layouts/footer' %>
+</div>
 
 </body>
 </html>
