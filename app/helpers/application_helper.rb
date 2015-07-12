@@ -1,6 +1,6 @@
 module ApplicationHelper
   # Produces title for pages
-  def page_title(title, base = SiteSetting.find_by(key: 'company_name').value)
+  def page_title(title, base = Setting.find_by(key: 'company_name').value)
     (title.empty? ? base : "#{title} | #{base}").html_safe
   end
 

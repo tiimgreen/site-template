@@ -1,0 +1,47 @@
+$sidebar_width: 70px;
+
+.sidebar {
+  width: $sidebar_width;
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-right: 1px solid #ddd;
+  bottom: 0;
+  z-index: 2;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+
+      a {
+        width: 100%;
+        height: 100%;
+        font-size: 30px;
+      }
+    }
+
+    &.top-menu {
+
+    }
+
+    &.bottom-menu {
+      poition: fixed;
+      bottom: 0;
+      left: 0;
+    }
+  }
+}
+
+#body {
+  position: relative;
+  left: $sidebar_width;
+  width: calc(100% - $sidebar_width);
+  width: -webkit-calc(100% - $sidebar_width);
+  width: -moz-calc(100% - $sidebar_width);
+}
