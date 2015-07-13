@@ -11,6 +11,16 @@ Rails.application.routes.draw do
   get 'settings/:id',      to: 'settings#show',   as: :setting
   match 'settings/:id',    to: 'settings#update', via: :patch
 
+  # PageElementTexts
+  get 'page-element-texts/:id/edit', to: 'page_element_texts#edit',   as: :edit_page_element_text
+  get 'page-element-texts/:id',      to: 'page_element_texts#show',   as: :page_element_text
+  match 'page-element-texts/:id',    to: 'page_element_texts#update', via: :patch
+
+  # PageElementLinks
+  get 'page-element-links/:id/edit', to: 'page_element_links#edit',   as: :edit_page_element_link
+  get 'page-element-links/:id',      to: 'page_element_links#show',   as: :page_element_link
+  match 'page-element-links/:id',    to: 'page_element_links#update', via: :patch
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
