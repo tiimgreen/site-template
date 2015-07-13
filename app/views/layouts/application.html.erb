@@ -7,7 +7,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body class="<%= controller.controller_name %> <%= controller.action_name %> <%= 'admin' if on_admin_page? %>">
+<body class="<%= controller.controller_name %> <%= controller.action_name %> <%= 'admin-signed-in' if user_signed_in? %> <%= 'admin-page' if on_admin_page? %>">
 
 <%= render 'layouts/sidebar' %>
 
