@@ -1,13 +1,15 @@
 module AdminHelper
   include ActionView::Helpers::UrlHelper
+  i18n = false
 
   # Text
   def edit_text(
     page,
     key,
     default_text = 'Lorem ipsum dolor sit amet domo, consectetur adipisicing elit.',
-    options = { render_markdown: true, p_tags: true }
+    options = {}
   )
+    key += "_#{I18n.locale}" if i18n
     page_id = key.start_with?('global') ? 0 : page.id
     @markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML,
                                         autolink: true,
@@ -17,7 +19,7 @@ module AdminHelper
     page_element =
       PageElementText.create_with(value: default_text).find_or_create_by(key: key, web_page_id: page_id)
 
-    value_to_return = page_element.default_text
+    value_to_return = page_element.value
 
     if user_signed_in?
       value_to_return += " "
@@ -25,15 +27,15 @@ module AdminHelper
         link_to('Edit', edit_page_element_text_path(page_element), class: 'edit-page-element')
     end
 
-    if options[:render_markdown]
+    if !options.has_key?(:render_markdown) || options[:render_markdown]
       value_to_return = @markdown.render(value_to_return).html_safe
 
-      unless options[:p_tags]
+      if options.has_key?(:p_tags) && !options[:p_tags]
         value_to_return = Regexp.new(/\A<p>(.*)<\/p>\Z/m).match(value_to_return)[1] rescue value_to_return
       end
-    else
-      value_to_return = value_to_return.html_safe
     end
+
+    value_to_return.html_safe
   end
 
   def read_text(
@@ -41,6 +43,7 @@ module AdminHelper
     key,
     default = ''
   )
+    key += "_#{I18n.locale}" if i18n
     page_id = key.start_with?('global') ? 0 : page.id
 
     if (page_element = PageElementText.find_by(key: key, web_page_id: page_id))
@@ -58,6 +61,7 @@ module AdminHelper
     default_link = '/',
     options = {}
   )
+    key += "_#{I18n.locale}" if i18n
     page_id = key.start_with?('global') ? 0 : page.id
 
     page_element_link =
@@ -77,6 +81,7 @@ module AdminHelper
   end
 
   def edit_setting(key)
+    key += "_#{I18n.locale}" if i18n
     setting = Setting.find_by(key: key)
     value_to_return = setting.value
 
