@@ -1,6 +1,5 @@
 module AdminHelper
   include ActionView::Helpers::UrlHelper
-  i18n = false
 
   # Text
   def edit_text(
@@ -9,7 +8,7 @@ module AdminHelper
     default_text = 'Lorem ipsum dolor sit amet domo, consectetur adipisicing elit.',
     options = {}
   )
-    key += "_#{I18n.locale}" if i18n
+    key += "_#{I18n.locale.to_s}" if Rails.configuration.i18n_used
     page_id = key.start_with?('global') ? 0 : page.id
     @markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML,
                                         autolink: true,
@@ -24,10 +23,18 @@ module AdminHelper
     if user_signed_in?
       value_to_return += " "
       value_to_return +=
-        link_to('Edit', edit_page_element_text_path(page_element), class: 'edit-page-element')
+        link_to(
+          'Edit',
+          edit_page_element_text_path(
+            page_element,
+            markdown: !options.has_key?(:render_markdown) || options[:render_markdown]
+          ),
+          class: 'edit-page-element'
+        )
     end
 
     if !options.has_key?(:render_markdown) || options[:render_markdown]
+
       value_to_return = @markdown.render(value_to_return).html_safe
 
       if options.has_key?(:p_tags) && !options[:p_tags]
@@ -43,7 +50,7 @@ module AdminHelper
     key,
     default = ''
   )
-    key += "_#{I18n.locale}" if i18n
+    key += "_#{I18n.locale}" if Rails.configuration.i18n_used
     page_id = key.start_with?('global') ? 0 : page.id
 
     if (page_element = PageElementText.find_by(key: key, web_page_id: page_id))
@@ -61,7 +68,7 @@ module AdminHelper
     default_link = '/',
     options = {}
   )
-    key += "_#{I18n.locale}" if i18n
+    key += "_#{I18n.locale}" if Rails.configuration.i18n_used
     page_id = key.start_with?('global') ? 0 : page.id
 
     page_element_link =
@@ -81,7 +88,7 @@ module AdminHelper
   end
 
   def edit_setting(key)
-    key += "_#{I18n.locale}" if i18n
+    key += "_#{I18n.locale}" if Rails.configuration.i18n_used
     setting = Setting.find_by(key: key)
     value_to_return = setting.value
 

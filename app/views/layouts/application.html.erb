@@ -3,8 +3,9 @@
 <head>
   <title><%= page_title @page_title %></title>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/editor/0.1.0/editor.css">
+
+  <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= csrf_meta_tags %>
 </head>
 <body class="<%= controller.controller_name %> <%= controller.action_name %> <%= 'admin-signed-in' if user_signed_in? %> <%= 'admin-page' if on_admin_page? %>">
@@ -19,6 +20,10 @@
 
   <%= render 'layouts/footer' %>
 </div>
+
+<script src="//cdn.jsdelivr.net/editor/0.1.0/editor.js"></script>
+<script src="//cdn.jsdelivr.net/editor/0.1.0/marked.js"></script>
+<%= javascript_include_tag 'application' %>
 
 </body>
 </html>
