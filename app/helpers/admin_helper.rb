@@ -35,7 +35,7 @@ module AdminHelper
 
     if !options.has_key?(:render_markdown) || options[:render_markdown]
 
-      value_to_return = @markdown.render(value_to_return).html_safe
+      value_to_return = @markdown.render(value_to_return.gsub!(/\r\n/, '<br>')).html_safe
 
       if options.has_key?(:p_tags) && !options[:p_tags]
         value_to_return = Regexp.new(/\A<p>(.*)<\/p>\Z/m).match(value_to_return)[1] rescue value_to_return
@@ -54,9 +54,9 @@ module AdminHelper
     page_id = key.start_with?('global') ? 0 : page.id
 
     if (page_element = PageElementText.find_by(key: key, web_page_id: page_id))
-      page_element.value.html_safe
+      page_element.value.gsub!(/\r\n/, '<br>').html_safe
     else
-      default.html_safe
+      default.gsub!(/\r\n/, '<br>').html_safe
     end
   end
 
