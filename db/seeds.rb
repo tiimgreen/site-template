@@ -31,3 +31,13 @@ Setting.create(
 )
 
 puts "Settings created".green
+
+User.create(
+  first_name: 'Tim',
+  last_name: 'Green',
+  email: 'tiimgreen@gmail.com',
+  password: 'password',
+  password_confirmation: 'password'
+)
+
+puts "User created".green
