@@ -10,7 +10,7 @@
 </head>
 <body class="<%= controller.controller_name %> <%= controller.action_name %> <%= 'admin-signed-in' if user_signed_in? %> <%= 'admin-page' if on_admin_page? %>">
 
-<%= render 'layouts/sidebar' %>
+<%= render 'layouts/sidebar' if user_signed_in? %>
 
 <div id="body">
   <%= render 'layouts/header' %>
