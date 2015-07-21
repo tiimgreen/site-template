@@ -14,6 +14,7 @@ module AdminHelper
                                         autolink: true,
                                         space_after_headers: true,
                                         prettify: true)
+    uses_markdown = !options.has_key?(:render_markdown) || options[:render_markdown]
 
     page_element =
       PageElementText.create_with(value: default_text).find_or_create_by(key: key, web_page_id: page_id)
@@ -25,15 +26,12 @@ module AdminHelper
       value_to_return +=
         link_to(
           'Edit',
-          edit_page_element_text_path(
-            page_element,
-            markdown: !options.has_key?(:render_markdown) || options[:render_markdown]
-          ),
+          edit_page_element_text_path(page_element, markdown: uses_markdown),
           class: 'edit-page-element'
         )
     end
 
-    if !options.has_key?(:render_markdown) || options[:render_markdown]
+    if uses_markdown
 
       value_to_return = @markdown.render(value_to_return.gsub!(/\r\n/, '<br>')).html_safe
 
