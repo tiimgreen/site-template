@@ -19,6 +19,10 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring'
   gem 'rspec-rails', '~> 3.0'
-  gem 'capybara', '~> 2.4.4'
 end
 
+group :test do
+  gem 'capybara', '~> 2.4.4'
+  gem 'capybara-webkit', '~> 1.6.0'
+  gem 'factory_girl_rails', '~> 4.5.0'
+end

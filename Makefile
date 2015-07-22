@@ -8,3 +8,4 @@ all:
 	sed -i -- 's/site-template/$(DASH_SITE_NAME)/g' *config/database.yml*
 	sed -i -- 's/SITE-TEMPLATE/$(UPPER_DASH_SITE_NAME)/g' *config/database.yml*
 	rake db:create db:migrate db:seed
+	rspec

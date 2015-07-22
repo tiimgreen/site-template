@@ -14,7 +14,7 @@ class PageElementTextsController < ApplicationController
     @page_element_text = PageElementText.find(params[:id])
 
     if @page_element_text.update_attributes(page_element_text_params)
-      flash[:success] = 'Link updated'
+      flash[:success] = 'Text updated'
       redirect_to cookies[:referrer]
     else
       render :edit
