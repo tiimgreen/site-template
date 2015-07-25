@@ -15,6 +15,7 @@ module AdminHelper
                                         space_after_headers: true,
                                         prettify: true)
     uses_markdown = !options.has_key?(:render_markdown) || options[:render_markdown]
+    uses_p_tags = options.has_key?(:p_tags) && options[:p_tags]
 
     page_element =
       PageElementText
@@ -24,7 +25,6 @@ module AdminHelper
     value_to_return = page_element.value
 
     if user_signed_in?
-      value_to_return += " "
       value_to_return +=
         link_to(
           'Edit',
@@ -36,20 +36,17 @@ module AdminHelper
     return value_to_return.html_safe unless uses_markdown
 
     value_to_return.gsub!(/\r\n/, '<br>')
+    value_to_return = @markdown.render(value_to_return).html_safe
 
-    value_to_return =
-      @markdown.render(value_to_return).html_safe
+    return value_to_return if uses_p_tags
 
-    if options.has_key?(:p_tags) && !options[:p_tags]
-      begin
-        value_to_return =
-          Regexp.new(/\A<p>(.*)<\/p>\Z/m).match(value_to_return)[1]
-      rescue
-        value_to_return
-      end
+    begin
+      value_to_return = Regexp.new(/\A<p>(.*)<\/p>\Z/m).match(value_to_return)[1]
+    rescue
+      value_to_return
     end
 
-    value_to_return.html_safe
+    value_to_return
   end
 
   def read_text(
@@ -83,18 +80,12 @@ module AdminHelper
         .create_with(text: default_text, link: default_link)
         .find_or_create_by(key: key, web_page_id: page_id)
 
-    value_to_return =
-      link_to(page_element_link.text, page_element_link.link, options)
+    value_to_return = link_to(page_element_link.text, page_element_link.link, options)
 
-    if user_signed_in?
-      value_to_return += " "
-      value_to_return +=
-        link_to(
-          'Edit',
-          edit_page_element_link_path(page_element_link),
-          class: 'edit-page-element'
-        )
-    end
+    return value_to_return.html_safe unless user_signed_in?
+
+    value_to_return +=
+      link_to('Edit', edit_page_element_link_path(page_element_link), class: 'edit-page-element')
 
     value_to_return.html_safe
   end
