@@ -27,66 +27,9 @@ describe 'Home Page' do
       end
     end
 
-    describe 'as normal use' do
+    describe 'as normal user' do
       it 'should not have the admin sidebar' do
         expect(page).to_not have_css('div.sidebar')
-      end
-    end
-  end
-
-  describe 'PageElementText' do
-
-    describe 'as normal user' do
-
-      it 'should have default content' do
-        expect(page).to have_selector('p', text: 'Lorem ipsum dolor sit amet domo, consectetur adipisicing elit.')
-      end
-
-      it 'should not have admin link' do
-        expect(page).to_not have_link('Edit')
-      end
-    end
-
-    describe 'as admin user' do
-      let(:user) { FactoryGirl.create(:user) }
-      before do
-        sign_in user
-        visit root_path
-      end
-
-      it 'should have default content' do
-        expect(page).to have_selector('p', text: 'Lorem ipsum dolor sit amet domo, consectetur adipisicing elit.')
-      end
-
-      it 'should have admin link' do
-        expect(page).to have_link('Edit')
-      end
-    end
-  end
-
-  describe 'PageElementLink' do
-
-    describe 'as normal user' do
-
-      it 'should have default content' do
-        expect(page).to have_link('Lorem ipsum dolor sit amet domo, consectetur adipisicing elit.', href: '/')
-      end
-    end
-
-    describe 'as admin user' do
-
-      let(:user) { FactoryGirl.create(:user) }
-      before do
-        sign_in user
-        visit root_path
-      end
-
-      it 'should have default content' do
-        expect(page).to have_link('Lorem ipsum dolor sit amet domo, consectetur adipisicing elit.', href: '/')
-      end
-
-      it 'should have admin link' do
-        expect(page).to have_link('Edit')
       end
     end
   end
