@@ -2,11 +2,20 @@ module AdminHelper
   include ActionView::Helpers::UrlHelper
 
   # Text
+  # Returns text if normal user, or edit link if Admin.
+  #
+  # @param (String) key - the identifier for the editable
+  # @param (String or Hash) default_text - contains the default text to display
+  #   if the user hasn't edited. Can either be String or Hash with keys as
+  #   locales to be used if using I18n.
+  #
+  # @return string - HTML encoded format of text
   def edit_text(
     key,
     default_text = 'Lorem ipsum dolor sit amet domo, consectetur adipisicing elit.',
     options = {}
   )
+    display_text = default_text.is_a?(Hash) ? default_text[I18n.locale] : default_text
     key += "_#{I18n.locale}" if Rails.configuration.i18n_used
     page_id = key.start_with?('global') ? 0 : @page.id
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML,
@@ -16,15 +25,11 @@ module AdminHelper
     uses_markdown = !options.key?(:render_markdown) || options[:render_markdown]
     uses_p_tags = options.key?(:p_tags) && options[:p_tags]
 
-    page_element =
-      PageElementText.create_with(
-        value: default_text
-      ).find_or_create_by(
-        key: key,
-        web_page_id: page_id
-      )
+    if (page_element = PageElementText.where(key: key, web_page_id: page_id)).any?
+      display_text = page_element.value
+    end
 
-    value_to_return = page_element.value
+    value_to_return = display_text
 
     if user_signed_in?
       value_to_return +=
@@ -37,7 +42,7 @@ module AdminHelper
 
     return value_to_return.html_safe unless uses_markdown
 
-    value_to_return.gsub!(/\r\n|\n/, '<br>')
+    value_to_return.gsub!(/\r\n/, '<br>')
     value_to_return = markdown.render(value_to_return).html_safe
 
     return value_to_return if uses_p_tags
@@ -59,9 +64,9 @@ module AdminHelper
     page_id = key.start_with?('global') ? 0 : @page.id
 
     if (page_element = PageElementText.find_by(key: key, web_page_id: page_id))
-      page_element.value.gsub!(/\r\n|\n/, '<br>').html_safe
+      page_element.value.gsub!(/\r\n/, '<br>').html_safe
     else
-      default.gsub!(/\r\n|\n/, '<br>').html_safe
+      default.gsub!(/\r\n/, '<br>').html_safe
     end
   end
 
