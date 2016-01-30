@@ -22,14 +22,18 @@ module AdminHelper
                                        autolink: true,
                                        space_after_headers: true,
                                        prettify: true)
-    uses_markdown = !options.key?(:render_markdown) || options[:render_markdown]
-    uses_p_tags = options.key?(:p_tags) && options[:p_tags]
+    uses_markdown = options.key?(:render_markdown) ? options[:render_markdown] : true
+    uses_p_tags = options.key?(:p_tags) ? options[:p_tags] : false
 
-    if (page_element = PageElementText.where(key: key, web_page_id: page_id)).any?
-      display_text = page_element.value
-    end
+    page_element =
+      PageElementText.create_with(
+        value: display_text
+      ).find_or_create_by(
+        key: key,
+        web_page_id: page_id
+      )
 
-    value_to_return = display_text
+    value_to_return = page_element.value
 
     if user_signed_in?
       value_to_return +=
@@ -58,15 +62,16 @@ module AdminHelper
 
   def read_text(
     key,
-    default = ''
+    default_text = ''
   )
+    display_text = default_text.is_a?(Hash) ? default_text[I18n.locale] : default_text
     key += "_#{I18n.locale}" if Rails.configuration.i18n_used
     page_id = key.start_with?('global') ? 0 : @page.id
 
     if (page_element = PageElementText.find_by(key: key, web_page_id: page_id))
-      page_element.value.gsub!(/\r\n/, '<br>').html_safe
+      page_element.value.gsub(/\r\n/, '<br>').html_safe
     else
-      default.gsub!(/\r\n/, '<br>').html_safe
+      display_text.gsub(/\r\n/, '<br>').html_safe
     end
   end
 
@@ -79,10 +84,11 @@ module AdminHelper
   )
     key += "_#{I18n.locale}" if Rails.configuration.i18n_used
     page_id = key.start_with?('global') ? 0 : @page.id
+    display_text = default_text.is_a?(Hash) ? default_text[I18n.locale] : default_text
 
     page_element_link =
       PageElementLink.create_with(
-        text: default_text,
+        text: display_text,
         link: default_link
       ).find_or_create_by(
         key: key,
